@@ -43,7 +43,7 @@ public class ActivityOnSubscribeTest extends BaseOnSubscribeTest {
         when(status.isSuccess()).thenReturn(true);
         when(activityRecognitionApi.requestActivityUpdates(apiClient, 1L, pendingIntent)).thenReturn(pendingResult);
 
-        setupBaseSingleSuccess(single);
+        setUpBaseSingleSuccess(single);
 
         assertSingleValue(Single.create(single).test(), status);
     }
@@ -56,7 +56,7 @@ public class ActivityOnSubscribeTest extends BaseOnSubscribeTest {
         when(status.isSuccess()).thenReturn(false);
         when(activityRecognitionApi.requestActivityUpdates(apiClient, 1L, pendingIntent)).thenReturn(pendingResult);
 
-        setupBaseSingleSuccess(single);
+        setUpBaseSingleSuccess(single);
 
         assertError(Single.create(single).test(), StatusException.class);
     }
@@ -71,7 +71,7 @@ public class ActivityOnSubscribeTest extends BaseOnSubscribeTest {
         when(status.isSuccess()).thenReturn(true);
         when(activityRecognitionApi.removeActivityUpdates(apiClient, pendingIntent)).thenReturn(pendingResult);
 
-        setupBaseSingleSuccess(single);
+        setUpBaseSingleSuccess(single);
 
         assertSingleValue(Single.create(single).test(), status);
     }
@@ -84,7 +84,7 @@ public class ActivityOnSubscribeTest extends BaseOnSubscribeTest {
         when(status.isSuccess()).thenReturn(false);
         when(activityRecognitionApi.removeActivityUpdates(apiClient, pendingIntent)).thenReturn(pendingResult);
 
-        setupBaseSingleSuccess(single);
+        setUpBaseSingleSuccess(single);
 
         assertError(Single.create(single).test(), StatusException.class);
     }
