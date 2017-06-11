@@ -15,6 +15,8 @@ import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.GeofencingApi;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.SettingsApi;
+import com.google.android.gms.location.places.GeoDataApi;
+import com.google.android.gms.location.places.Places;
 
 import org.mockito.Matchers;
 import org.mockito.Mock;
@@ -27,8 +29,8 @@ import io.reactivex.SingleEmitter;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
+
+import static org.mockito.Mockito.*;
 
 public abstract class BaseOnSubscribeTest extends BaseTest {
 
@@ -42,15 +44,18 @@ public abstract class BaseOnSubscribeTest extends BaseTest {
     @Mock ActivityRecognitionApi activityRecognitionApi;
     @Mock GeofencingApi geofencingApi;
     @Mock SettingsApi settingsApi;
+    @Mock GeoDataApi geoDataApi;
 
     @CallSuper
     public void setup() throws Exception {
         PowerMockito.mockStatic(LocationServices.class);
         PowerMockito.mockStatic(ActivityRecognition.class);
+        PowerMockito.mockStatic(Places.class);
         Whitebox.setInternalState(LocationServices.class, fusedLocationProviderApi);
         Whitebox.setInternalState(LocationServices.class, geofencingApi);
         Whitebox.setInternalState(LocationServices.class, settingsApi);
         Whitebox.setInternalState(ActivityRecognition.class, activityRecognitionApi);
+        Whitebox.setInternalState(Places.class, geoDataApi);
 
         doReturn(status).when(status).getStatus();
 
