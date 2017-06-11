@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+def getGooglePlayServicesApiKey() {
+    return project.findProperty("GMS_API_KEY") ?: ""
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -11,6 +15,7 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0.0"
+        resValue "string", "API_KEY", getGooglePlayServicesApiKey()
     }
     buildTypes {
         release {
