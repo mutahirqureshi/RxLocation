@@ -1,12 +1,20 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.vanniktech:gradle-android-javadoc-plugin:0.2.1'
+    }
+}
+
 apply plugin: 'com.android.library'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'jacoco-android'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.vanniktech.android.javadoc'
 
-group = 'com.patloew.rxlocation'
-version = '1.0.3'
-project.archivesBaseName = 'rxlocation'
+group = 'com.github.mutahirqureshi'
 
 android {
     compileSdkVersion 25
@@ -15,8 +23,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 1
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -52,26 +60,3 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
 }
-
-task generateSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier 'sources'
-}
-
-task generateJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task generateJavadocsJar(type: Jar) {
-    from generateJavadocs.destinationDir
-    classifier 'javadoc'
-}
-
-generateJavadocsJar.dependsOn generateJavadocs
-
-artifacts {
-    archives generateJavadocsJar
-    archives generateSourcesJar
-}
-
