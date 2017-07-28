@@ -1,6 +1,11 @@
 # Reactive Location API Library for Android
 
-[![Build Status](https://travis-ci.org/patloew/RxLocation.svg?branch=master)](https://travis-ci.org/patloew/RxLocation) [![codecov](https://codecov.io/gh/patloew/RxLocation/branch/master/graph/badge.svg)](https://codecov.io/gh/patloew/RxLocation) [![Download](https://api.bintray.com/packages/patloew/maven/RxLocation/images/download.svg) ](https://bintray.com/patloew/maven/RxLocation/_latestVersion) [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![Platform](http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat)](http://developer.android.com/index.html)
+[![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14)
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![Build Status](https://travis-ci.org/mutahirqureshi/RxLocation.svg?branch=master)](https://travis-ci.org/mutahirqureshi/RxLocation)
+[![codecov](https://codecov.io/gh/mutahirqureshi/RxLocation/branch/master/graph/badge.svg)](https://codecov.io/gh/mutahirqureshi/RxLocation)
+[![Download](https://jitpack.io/v/mutahirqureshi/RxLocation.svg)](https://jitpack.io/#mutahirqureshi/RxLocation)
 
 This library wraps the Location APIs in [RxJava 2](https://github.com/ReactiveX/RxJava/tree/2.x) Observables, Singles, Maybes and Completables. No more managing GoogleApiClients! Also, the resolution of the location settings check is optionally handled by the lib.
 
@@ -81,11 +86,22 @@ example in ```~/.gradle/gradle.properties```.
 
 # Setup
 
-The lib is available on jCenter. Add the following to your `build.gradle`:
+##### Gradle (JitPack)
 
+In your root build.gradle:
+```groovy
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+In your project build.gradle:
 ```groovy
 dependencies {
-    compile 'com.patloew.rxlocation:rxlocation:1.0.3'
+    compile 'com.github.mutahirqureshi:rxlocation:1.0.0'
 }
 ```
 
@@ -95,11 +111,11 @@ When unit testing your app's classes, RxLocation behavior can be mocked easily. 
 
 # Credits
 
-The code for managing the GoogleApiClient was adapted from the [Android-ReactiveLocation](https://github.com/mcharmas/Android-ReactiveLocation) library by Michał Charmas, which is licensed under the Apache License, Version 2.0.
+This project has been forked from [RxLocation](https://github.com/patloew/RxLocation) library by Patrick Löwenstein, which is licensed under the Apache License, Version 2.0.
 
 # License
 
-	Copyright 2016 Patrick Löwenstein
+	Copyright 2017 Muhammad Qureshi
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
