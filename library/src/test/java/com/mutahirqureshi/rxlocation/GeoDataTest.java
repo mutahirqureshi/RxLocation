@@ -28,6 +28,7 @@ public class GeoDataTest extends BaseTest {
     @Mock LatLngBounds bounds;
     @Mock AutocompleteFilter filter;
     final String query = "some query";
+    final String[] placeIds = new String[] { "some place id" };
 
     @Override
     @Before
@@ -61,4 +62,26 @@ public class GeoDataTest extends BaseTest {
         assertEquals(filter, single.filter);
         assertTimeoutSet(single);
     }
+
+    // PlaceById
+
+    @Test
+    public void PlaceById() throws Exception {
+        ArgumentCaptor<PlaceByIdSingleOnSubscribe> captor = ArgumentCaptor.forClass(PlaceByIdSingleOnSubscribe.class);
+
+        rxLocation.geoData().placeById(placeIds);
+        rxLocation.geoData().placeById(placeIds, TIMEOUT_TIME, TIMEOUT_TIMEUNIT);
+
+        PowerMockito.verifyStatic(times(2));
+        Single.create(captor.capture());
+
+        PlaceByIdSingleOnSubscribe single = captor.getAllValues().get(0);
+        assertEquals(placeIds, single.placeIds);
+        assertNoTimeoutSet(single);
+
+        single = captor.getAllValues().get(1);
+        assertEquals(placeIds, single.placeIds);
+        assertTimeoutSet(single);
+    }
+
 }

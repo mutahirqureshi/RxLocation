@@ -2,12 +2,15 @@ package com.mutahirqureshi.rxlocationsample;
 
 import android.location.Address;
 import android.location.Location;
+import android.support.v4.util.Pair;
 import android.text.style.CharacterStyle;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.mutahirqureshi.rxlocation.FusedLocation;
 import com.mutahirqureshi.rxlocation.GeoData;
@@ -124,9 +127,11 @@ public class MainPresenterTest {
         AutocompletePrediction prediction = mock(AutocompletePrediction.class);
         AutocompletePredictionBuffer buffer = mock(AutocompletePredictionBuffer.class);
         String fullText = "123 Some Address";
+        String placeId = "some place id";
 
         doReturn(Single.just(false)).when(locationSettings).checkAndHandleResolution(any(LocationRequest.class));
         doReturn(fullText).when(prediction).getFullText(Matchers.any(CharacterStyle.class));
+        doReturn(placeId).when(prediction).getPlaceId();
         doReturn(Single.just(buffer)).when(geoData).autocompletePredictions(anyString(), any(LatLngBounds.class), any(AutocompleteFilter.class));
         doReturn(Collections.singletonList(prediction).iterator()).when(buffer).iterator();
         doNothing().when(presenter).startLocationRefresh();
@@ -134,7 +139,27 @@ public class MainPresenterTest {
         presenter.attachView(mainView);
         presenter.onAutocompleteQueryChanged("some query");
 
-        verify(mainView).onAutocompleteResultsUpdate(Collections.singletonList(fullText));
+        verify(mainView).onAutocompleteResultsUpdate(Collections.singletonList(Pair.create(fullText, placeId)));
+        verifyNoMoreInteractions(mainView);
+    }
+
+    @Test
+    public void onPlaceClicked() {
+        MainPresenter presenter = spy(mainPresenter);
+        Place place = mock(Place.class);
+        PlaceBuffer buffer = mock(PlaceBuffer.class);
+        String placeName = "Melbourne Cricket Ground";
+
+        doReturn(Single.just(false)).when(locationSettings).checkAndHandleResolution(any(LocationRequest.class));
+        doReturn(placeName).when(place).getName();
+        doReturn(Single.just(buffer)).when(geoData).placeById(any(String[].class));
+        doReturn(Collections.singletonList(place).iterator()).when(buffer).iterator();
+        doNothing().when(presenter).startLocationRefresh();
+
+        presenter.attachView(mainView);
+        presenter.onPlaceClicked("some place id");
+
+        verify(mainView).onNewPlaceName(placeName);
         verifyNoMoreInteractions(mainView);
     }
 }

@@ -2,10 +2,13 @@ package com.mutahirqureshi.rxlocationsample;
 
 import android.location.Address;
 import android.location.Location;
+import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.mutahirqureshi.rxlocation.DataBufferFlowable;
@@ -70,7 +73,7 @@ public class MainPresenter {
         disposable.add(
             rxLocation.geoData().autocompletePredictions(query, bounds, filter)
                 .flatMapPublisher(DataBufferFlowable::from)
-                .map(autocompletePrediction -> autocompletePrediction.getFullText(null).toString())
+                .map(autocompletePrediction -> Pair.create(autocompletePrediction.getFullText(null).toString(), autocompletePrediction.getPlaceId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .toList()
@@ -79,6 +82,18 @@ public class MainPresenter {
         );
     }
 
+    public void onPlaceClicked(String placeId) {
+        disposable.add(
+            rxLocation.geoData().placeById(placeId)
+                .flatMapPublisher(DataBufferFlowable::from)
+                .map(Place::getName)
+                .filter(name -> !TextUtils.isEmpty(name))
+                .first("No name found")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(view::onNewPlaceName, throwable -> Log.e("MainPresenter", "Error fetching Place from placeId", throwable))
+        );
+    }
 
     public void startLocationRefresh() {
         disposable.add(
