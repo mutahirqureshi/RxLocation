@@ -2,6 +2,7 @@ package com.mutahirqureshi.rxlocationsample;
 
 import android.location.Address;
 import android.location.Location;
+import android.support.v4.util.Pair;
 
 import java.util.List;
 
@@ -22,5 +23,6 @@ public interface MainView {
     void onLocationUpdate(Location location);
     void onAddressUpdate(Address address);
     void onLocationSettingsUnsuccessful();
-    void onAutocompleteResultsUpdate(List<String> results);
+    void onAutocompleteResultsUpdate(List<Pair<String, String>> results);
+    void onNewPlaceName(CharSequence placeName);
 }

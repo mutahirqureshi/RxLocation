@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -69,14 +71,13 @@ public class MainActivity extends AppCompatActivity implements MainView, TextWat
         autocompleteQueryText = (EditText) findViewById(R.id.et_autocomplete_query);
         autocompleteResultsList = (RecyclerView) findViewById(R.id.rv_autocomplete_results);
 
-        autocompleteResultsAdapter = new Adapter(this);
-        autocompleteResultsList.setAdapter(autocompleteResultsAdapter);
-        autocompleteQueryText.addTextChangedListener(this);
-
         rxLocation = new RxLocation(this);
         rxLocation.setDefaultTimeout(15, TimeUnit.SECONDS);
-
         presenter = new MainPresenter(rxLocation);
+
+        autocompleteResultsAdapter = new Adapter(this, presenter::onPlaceClicked);
+        autocompleteResultsList.setAdapter(autocompleteResultsAdapter);
+        autocompleteQueryText.addTextChangedListener(this);
     }
 
     @Override
@@ -186,17 +187,24 @@ public class MainActivity extends AppCompatActivity implements MainView, TextWat
     }
 
     @Override
-    public void onAutocompleteResultsUpdate(List<String> results) {
+    public void onAutocompleteResultsUpdate(List<Pair<String, String>> results) {
         autocompleteResultsAdapter.setItems(results);
+    }
+
+    @Override
+    public void onNewPlaceName(CharSequence placeName) {
+        Toast.makeText(this, placeName, Toast.LENGTH_SHORT).show();
     }
 
     private static class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private final LayoutInflater layoutInflater;
-        private final List<String> items;
+        private final List<Pair<String, String>> items;
+        private final Callback callback;
 
-        Adapter(@NonNull Context context) {
+        Adapter(@NonNull Context context, Callback callback) {
             this.layoutInflater = LayoutInflater.from(context);
             this.items = new ArrayList<>();
+            this.callback = callback;
         }
 
         @Override
@@ -207,7 +215,9 @@ public class MainActivity extends AppCompatActivity implements MainView, TextWat
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.textView.setText(items.get(position));
+            Pair<String, String> item = items.get(position);
+            holder.textView.setText(item.first);
+            holder.itemView.setOnClickListener(v -> callback.onPlaceClicked(item.second));
         }
 
         @Override
@@ -215,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements MainView, TextWat
             return items.size();
         }
 
-        public void setItems(List<String> items) {
+        public void setItems(List<Pair<String, String>> items) {
             this.items.clear();
             this.items.addAll(items);
             notifyDataSetChanged();
@@ -228,6 +238,10 @@ public class MainActivity extends AppCompatActivity implements MainView, TextWat
                 super(itemView);
                 textView = (TextView) itemView;
             }
+        }
+
+        interface Callback {
+            void onPlaceClicked(String placeId);
         }
     }
 

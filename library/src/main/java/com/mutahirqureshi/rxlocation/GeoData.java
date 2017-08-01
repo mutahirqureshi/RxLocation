@@ -2,6 +2,7 @@ package com.mutahirqureshi.rxlocation;
 
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.concurrent.TimeUnit;
@@ -38,5 +39,17 @@ public class GeoData {
 
     private Single<AutocompletePredictionBuffer> autocompletePredictionsInternal(String query, LatLngBounds bounds, AutocompleteFilter filter, Long timeout, TimeUnit timeUnit) {
         return Single.create(new AutocompletePredictionsSingleOnSubscribe(rxLocation, query, bounds, filter, timeout, timeUnit));
+    }
+
+    public Single<PlaceBuffer> placeById(String... placeIds) {
+        return placeByIdInternal(placeIds, null, null);
+    }
+
+    public Single<PlaceBuffer> placeById(String[] placeIds, Long timeout, TimeUnit timeUnit) {
+        return placeByIdInternal(placeIds, timeout, timeUnit);
+    }
+
+    private Single<PlaceBuffer> placeByIdInternal(String[] placeIds, Long timeout, TimeUnit timeUnit) {
+        return Single.create(new PlaceByIdSingleOnSubscribe(rxLocation, placeIds, timeout, timeUnit));
     }
 }
