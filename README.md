@@ -101,7 +101,7 @@ allprojects {
 In your project build.gradle:
 ```groovy
 dependencies {
-    compile 'com.github.mutahirqureshi:rxlocation:1.0.0'
+    compile 'com.github.mutahirqureshi:rxlocation:{latest_release_version}'
 }
 ```
 
