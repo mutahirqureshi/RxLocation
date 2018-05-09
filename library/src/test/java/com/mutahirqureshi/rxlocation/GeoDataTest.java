@@ -18,11 +18,11 @@ import io.reactivex.Single;
 
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @SuppressWarnings("MissingPermission")
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({ Single.class, LatLngBounds.class, ConnectionResult.class })
+@PrepareOnlyThisForTest({ Single.class, LatLngBounds.class, ConnectionResult.class, AutocompleteFilter.class })
 public class GeoDataTest extends BaseTest {
 
     @Mock LatLngBounds bounds;
@@ -47,7 +47,7 @@ public class GeoDataTest extends BaseTest {
         rxLocation.geoData().autocompletePredictions(query, bounds, filter);
         rxLocation.geoData().autocompletePredictions(query, bounds, filter, TIMEOUT_TIME, TIMEOUT_TIMEUNIT);
 
-        PowerMockito.verifyStatic(times(2));
+        PowerMockito.verifyStatic(Single.class, times(2));
         Single.create(captor.capture());
 
         AutocompletePredictionsSingleOnSubscribe single = captor.getAllValues().get(0);
@@ -72,7 +72,7 @@ public class GeoDataTest extends BaseTest {
         rxLocation.geoData().placeById(placeIds);
         rxLocation.geoData().placeById(placeIds, TIMEOUT_TIME, TIMEOUT_TIMEUNIT);
 
-        PowerMockito.verifyStatic(times(2));
+        PowerMockito.verifyStatic(Single.class, times(2));
         Single.create(captor.capture());
 
         PlaceByIdSingleOnSubscribe single = captor.getAllValues().get(0);

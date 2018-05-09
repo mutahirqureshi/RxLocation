@@ -23,6 +23,8 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.powermock.api.mockito.PowerMockito.spy;
+//import static org.powermock.api.mockito.PowerMockito.doReturn;
+
 
 @SuppressWarnings("MissingPermission")
 @RunWith(PowerMockRunner.class)
@@ -38,6 +40,7 @@ public class SettingsTest extends BaseTest {
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
+//        locationSettingsRequestBuilder = PowerMockito.mock(LocationSettingsRequest.Builder.class);
         spy(Single.class);
         super.setup();
     }

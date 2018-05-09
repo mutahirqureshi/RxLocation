@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("MissingPermission")
 @RunWith(PowerMockRunner.class)
 @PrepareOnlyThisForTest({ LocationServices.class, com.google.android.gms.location.ActivityRecognition.class,
-    Places.class,Status.class, ConnectionResult.class, RxLocationBaseOnSubscribe.class })
+    Places.class,Status.class, ConnectionResult.class, RxLocationBaseOnSubscribe.class, GeofencingRequest.class })
 public class GeofencingOnSubscribeTest extends BaseOnSubscribeTest {
 
     @Mock GeofencingRequest geofencingRequest;

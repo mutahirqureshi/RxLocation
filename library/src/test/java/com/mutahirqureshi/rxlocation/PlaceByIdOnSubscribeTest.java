@@ -13,19 +13,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import io.reactivex.Single;
 
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("MissingPermission")
 @RunWith(PowerMockRunner.class)
 @PrepareOnlyThisForTest({ LocationServices.class, LatLngBounds.class, com.google.android.gms.location.ActivityRecognition.class,
     Places.class, Status.class, ConnectionResult.class, RxLocationBaseOnSubscribe.class
 })
+@PrepareForTest({ PlaceBuffer.class })
 public class PlaceByIdOnSubscribeTest extends BaseOnSubscribeTest {
 
     @Mock PlaceBuffer placeBuffer;
@@ -35,8 +38,8 @@ public class PlaceByIdOnSubscribeTest extends BaseOnSubscribeTest {
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
-        doReturn(status).when(placeBuffer).getStatus();
         super.setup();
+        doReturn(status).when(placeBuffer).getStatus();
     }
 
     // PlaceIdSingle

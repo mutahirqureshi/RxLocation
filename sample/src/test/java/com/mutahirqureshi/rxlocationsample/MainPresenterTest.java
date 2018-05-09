@@ -23,6 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -35,7 +36,14 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /* Copyright 2016 Patrick Löwenstein
  *
@@ -130,7 +138,7 @@ public class MainPresenterTest {
         String placeId = "some place id";
 
         doReturn(Single.just(false)).when(locationSettings).checkAndHandleResolution(any(LocationRequest.class));
-        doReturn(fullText).when(prediction).getFullText(Matchers.any(CharacterStyle.class));
+        doReturn(fullText).when(prediction).getFullText(ArgumentMatchers.nullable(CharacterStyle.class));
         doReturn(placeId).when(prediction).getPlaceId();
         doReturn(Single.just(buffer)).when(geoData).autocompletePredictions(anyString(), any(LatLngBounds.class), any(AutocompleteFilter.class));
         doReturn(Collections.singletonList(prediction).iterator()).when(buffer).iterator();
@@ -152,7 +160,7 @@ public class MainPresenterTest {
 
         doReturn(Single.just(false)).when(locationSettings).checkAndHandleResolution(any(LocationRequest.class));
         doReturn(placeName).when(place).getName();
-        doReturn(Single.just(buffer)).when(geoData).placeById(any(String[].class));
+        doReturn(Single.just(buffer)).when(geoData).placeById(anyString());
         doReturn(Collections.singletonList(place).iterator()).when(buffer).iterator();
         doNothing().when(presenter).startLocationRefresh();
 

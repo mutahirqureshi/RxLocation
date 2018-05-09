@@ -14,19 +14,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import io.reactivex.Single;
 
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings("MissingPermission")
 @RunWith(PowerMockRunner.class)
 @PrepareOnlyThisForTest({ LocationServices.class, LatLngBounds.class, com.google.android.gms.location.ActivityRecognition.class,
-    Places.class, Status.class, ConnectionResult.class, RxLocationBaseOnSubscribe.class
+    Places.class, Status.class, ConnectionResult.class, RxLocationBaseOnSubscribe.class, AutocompleteFilter.class
 })
+@PrepareForTest({ AutocompletePredictionBuffer.class })
 public class AutocompletePredictionsOnSubscribeTest extends BaseOnSubscribeTest {
 
     @Mock AutocompletePredictionBuffer autocompletePredictionBuffer;
@@ -38,8 +41,8 @@ public class AutocompletePredictionsOnSubscribeTest extends BaseOnSubscribeTest 
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
-        doReturn(status).when(autocompletePredictionBuffer).getStatus();
         super.setup();
+        doReturn(status).when(autocompletePredictionBuffer).getStatus();
     }
 
     // AutocompletePredictionsSingle
