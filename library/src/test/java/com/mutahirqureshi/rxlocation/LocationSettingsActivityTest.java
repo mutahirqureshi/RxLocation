@@ -92,7 +92,7 @@ public class LocationSettingsActivityTest  {
     public void setResolutionResultAndFinish_OK() {
         activity.setResolutionResultAndFinish(Activity.RESULT_OK);
 
-        PowerMockito.verifyStatic();
+        PowerMockito.verifyStatic(SettingsCheckHandleSingleOnSubscribe.class);
         SettingsCheckHandleSingleOnSubscribe.onResolutionResult(observableId, Activity.RESULT_OK);
 
         verify(activity).finish();
@@ -102,7 +102,7 @@ public class LocationSettingsActivityTest  {
     public void setResolutionResultAndFinish_Canceled() {
         activity.setResolutionResultAndFinish(Activity.RESULT_CANCELED);
 
-        PowerMockito.verifyStatic();
+        PowerMockito.verifyStatic(SettingsCheckHandleSingleOnSubscribe.class);
         SettingsCheckHandleSingleOnSubscribe.onResolutionResult(observableId, Activity.RESULT_CANCELED);
 
         verify(activity).finish();

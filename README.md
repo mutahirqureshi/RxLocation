@@ -102,6 +102,21 @@ In your project build.gradle:
 ```groovy
 dependencies {
     compile 'com.github.mutahirqureshi:rxlocation:{latest_release_version}'
+    compile 'com.google.android.gms:play-services-location:15.0.0'
+}
+```
+
+If you want to use a newer version of Google Play Services, declare the newer version in your `build.gradle`. This then overrides the version declared in the library.
+
+RxLocation only works with Android gradle plugin 3.0.0 or higher, since it uses Java 8 language features.  
+And don't forget to set the source code compatibility to Java 8:
+
+```groovy
+android {
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 ```
 
